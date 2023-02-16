@@ -32,4 +32,8 @@ const Container = styled.main`
     bottom: 0;
     z-index: -1;
   }
+
+  @media screen and (max-width: 780px){
+    min-height: calc(100vh - 70px - 60px);
+  }
 `

@@ -45,11 +45,20 @@ const Navbar = styled.header`
     background-color: #090b13;
     display: flex;
     align-items: center;
+
+    @media screen and (max-width: 780px){
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        z-index: 999;
+    }
 `
 
 const Nav = styled.nav`
     width: 100%;
-    padding: 0 36px;
+    padding: 0 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -67,6 +76,7 @@ const NavMenu = styled.div`
     a{
         display: flex;
         align-items: center;
+        gap: 5px;
         cursor: pointer;
 
         img{
@@ -100,6 +110,37 @@ const NavMenu = styled.div`
             }
         }
     }
+
+    @media screen and (max-width: 780px){
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        justify-content: space-evenly;
+        padding: 20px 0;
+        background-color: #090b13;
+        z-index: 999;
+    }
+
+    @media screen and (max-width: 590px){
+        gap: 8px;
+        padding: 12px 0;
+
+        a{
+            flex-direction: column;
+
+            img{
+                height: 25px;
+            }
+
+            span{
+                font-size: 8px
+            }
+        }
+
+
+    }
 `
 
 const UserImage = styled.img`
@@ -107,4 +148,9 @@ const UserImage = styled.img`
     height: 48px;
     border-radius: 50%;
     object-fit: cover;
+
+    @media screen and (max-width: 590px){
+        width: 40px;
+        height: 40px;
+    }
 `

@@ -55,6 +55,10 @@ const Carousel = styled(Slider)`
     button{
         z-index: 1;
     }
+
+    @media screen and (max-width: 780px){
+       margin-top: 90px;
+    }
 `
 
 const Wrap = styled.div`
