@@ -28,13 +28,14 @@ export default Viewers
 
 const Container = styled.div`
   margin-top: 30px;
+  padding: 30px calc(3.5vw + 5px);
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 25px;
-  padding: 30px 0 26px;
 
   @media screen and (max-width: 590px){
     gap: 5px;
+    margin-top: 15px;
   }
 `
 

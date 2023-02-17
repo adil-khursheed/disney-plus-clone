@@ -1,35 +1,34 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import axios from '../axios';
 
-const Movies = () => {
+const Movies = ({ title, fetchUrl }) => {
+
+    const [movies, setMovies] = useState([]);
+
+    const base_url = "https://image.tmdb.org/t/p/original/";
+
+    useEffect(() => {
+        async function fetchData() {
+            const request = await axios.get(fetchUrl);
+            setMovies(request.data.results);
+            return request;
+        }
+
+        fetchData();
+    }, [fetchUrl]);
+
+    // console.log(movies);
+
   return (
       <Container>
-          <h4>Recommended for you</h4>
+          <h4>{title}</h4>
           <Content>
-              <Wrap>
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQl-PO4jp3ETvJLGc2TkKwgiNEVhP1yq2P0jw&usqp=CAU" alt="" />
-              </Wrap>
-              <Wrap>
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQl-PO4jp3ETvJLGc2TkKwgiNEVhP1yq2P0jw&usqp=CAU" alt="" />
-              </Wrap>
-              <Wrap>
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQl-PO4jp3ETvJLGc2TkKwgiNEVhP1yq2P0jw&usqp=CAU" alt="" />
-              </Wrap>
-              <Wrap>
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQl-PO4jp3ETvJLGc2TkKwgiNEVhP1yq2P0jw&usqp=CAU" alt="" />
-              </Wrap>
-              <Wrap>
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQl-PO4jp3ETvJLGc2TkKwgiNEVhP1yq2P0jw&usqp=CAU" alt="" />
-              </Wrap>
-              <Wrap>
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQl-PO4jp3ETvJLGc2TkKwgiNEVhP1yq2P0jw&usqp=CAU" alt="" />
-              </Wrap>
-              <Wrap>
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQl-PO4jp3ETvJLGc2TkKwgiNEVhP1yq2P0jw&usqp=CAU" alt="" />
-              </Wrap>
-              <Wrap>
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQl-PO4jp3ETvJLGc2TkKwgiNEVhP1yq2P0jw&usqp=CAU" alt="" />
-              </Wrap>
+              {movies.map(movie => (
+                  <Wrap key={movie.id}>
+                      <img src={`${base_url}${movie.poster_path}`} alt={movie.name} />
+                  </Wrap>
+              ))}
           </Content>
     </Container>
   )
@@ -38,22 +37,34 @@ const Movies = () => {
 export default Movies
 
 const Container = styled.div`
+    margin-top: 20px;
+
+    h4{
+        padding: 0px calc(3.5vw + 5px);
+        margin: 0;
+    }
 
 `
 
 const Content = styled.div`
-    display: grid;
-    gap: 25px;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    display: flex;
+    gap: 10px;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    padding: 20px 0;
+    scrollbar-width: none;
+    padding: 30px calc(3.5vw + 5px) 30px 0;
+    margin-left: calc(3.5vw + 5px);
 
-    @media screen and (max-width: 590px){
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
+    &::-webkit-scrollbar{
+        display: none;
     }
 `
 
 const Wrap = styled.div`
 
+    max-height: 250px;
+    min-width: 150px;
     border-radius: 10px;
     overflow: hidden;
     border: 3px solid rgba(249,249, 249, 0.1);

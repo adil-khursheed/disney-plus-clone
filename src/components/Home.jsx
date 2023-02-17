@@ -1,15 +1,25 @@
-import React from 'react';
+// import axios from '../axios';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ImageSlider from './ImageSlider';
 import Movies from './Movies';
 import Viewers from './Viewers';
+import requests from '../Requests';
 
 const Home = () => {
+
   return (
     <Container>
-      <ImageSlider />
+      <ImageSlider fetchUrl={requests.fetchTrending} />
       <Viewers />
-      <Movies />
+      <Movies title='Recommended for you' fetchUrl={requests.fetchTrending} />
+      <Movies title='Disney+ Originals' fetchUrl={requests.fetchDisneyOriginals} />
+      <Movies title='Top Rated' fetchUrl={requests.fetchTopRated} />
+      <Movies title='Action Movies' fetchUrl={requests.fetchActionMovies} />
+      <Movies title='Comedy Movies' fetchUrl={requests.fetchComedyMovies} />
+      <Movies title='Horror Movies' fetchUrl={requests.fetchHorrorMovies} />
+      <Movies title='Romance Movies' fetchUrl={requests.fetchRomanceMovies} />
+      <Movies title='Documentaries' fetchUrl={requests.fetchDocumentaries} />
     </Container>
   )
 }
@@ -18,7 +28,7 @@ export default Home
 
 const Container = styled.main`
   min-height: calc(100vh - 70px);
-  padding: 0 calc(3.5vw + 5px);
+  // padding: 0 calc(3.5vw + 5px);
   position: relative;
   overflow-x: hidden;
 
