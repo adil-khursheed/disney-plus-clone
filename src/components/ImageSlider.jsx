@@ -4,6 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styled from 'styled-components';
 import axios from '../axios';
+import { Link } from 'react-router-dom';
 
 const ImageSlider = ({ fetchUrl }) => {
 
@@ -32,15 +33,23 @@ const ImageSlider = ({ fetchUrl }) => {
         autoplay: true,
     }
 
-
   return (
       <Carousel {...settings}>
           {topMovies.map(movie => (
               <Wrap key={movie.id}>
+                  <Link to={`/detail/${movie.id}`}>
                   <img src={`${base_url}${movie.backdrop_path}`} alt="" />
                 <div>
-                    <h2>{movie.title}</h2>
+                    <h2>{movie.title || movie.name}</h2>
+                      <p>
+                          <span>{movie.release_date || movie.first_air_date}</span>
+                          <span>&#183;</span>
+                          <span>{movie.media_type}</span>
+                          <span>&#183;</span>
+                          <span>{movie.original_language}</span>
+                    </p>
                 </div>
+                  </Link>
               </Wrap>
           ))}
       </Carousel>
@@ -114,6 +123,16 @@ const Wrap = styled.div`
             font-size: 30px;
             color: rgb(249, 249, 249);
             line-height: 1.4;
+            margin: 0;
+        }
+
+        p{
+            margin-top: 5px;
+            color: rgb(249, 249, 249);
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
     }
 

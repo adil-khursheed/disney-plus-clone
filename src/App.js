@@ -6,8 +6,7 @@ import Home from './components/Home';
 import {
   BrowserRouter as Router,
   Routes,
-  Route,
-  Link
+  Route
 } from 'react-router-dom';
 import Detail from './components/Detail';
 import Login from './components/Login';
@@ -19,7 +18,7 @@ function App() {
         <Header />
         <Routes>
           <Route path='/login' element={<Login />}></Route>
-          <Route path='/detail' element={<Detail />}></Route>
+          <Route path='/detail/:id' element={<Detail />}></Route>
           <Route path='/' element={<Home />}></Route>
         </Routes>
       </Router>

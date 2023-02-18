@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import axios from '../axios';
+import { Link } from 'react-router-dom';
 
 const Movies = ({ title, fetchUrl }) => {
 
@@ -26,7 +27,9 @@ const Movies = ({ title, fetchUrl }) => {
           <Content>
               {movies.map(movie => (
                   <Wrap key={movie.id}>
-                      <img src={`${base_url}${movie.poster_path}`} alt={movie.name} />
+                      <Link to={`/detail/${movie.id}`}>
+                        <img src={`${base_url}${movie.poster_path}`} alt={movie.name} />
+                      </Link>
                   </Wrap>
               ))}
           </Content>

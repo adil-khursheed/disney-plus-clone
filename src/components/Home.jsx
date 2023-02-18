@@ -1,5 +1,4 @@
-// import axios from '../axios';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import ImageSlider from './ImageSlider';
 import Movies from './Movies';
@@ -45,5 +44,6 @@ const Container = styled.main`
 
   @media screen and (max-width: 780px){
     min-height: calc(100vh - 70px - 60px);
+    padding-bottom: 50px;
   }
 `

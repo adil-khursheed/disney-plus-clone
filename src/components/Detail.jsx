@@ -1,7 +1,27 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { useParams } from 'react-router-dom'
+import axios from '../axios';
 
 const Detail = () => {
+  const { id } = useParams();
+
+  const [movieDetail, setMovieDetail] = useState([]);
+
+    const base_url = "https://image.tmdb.org/t/p/original/";
+
+    useEffect(() => {
+        async function fetchData() {
+          const request = await axios.get();
+          setMovieDetail(request.data.results);
+          return request;
+        }
+
+        fetchData();
+    }, []);
+
+    // console.log(movieDetail);
+
   return (
     <Container>
       <Background>
@@ -39,13 +59,13 @@ const Detail = () => {
 export default Detail
 
 const Container = styled.div`
-  min-height: calc(100vh - 70px);
+  // min-height: calc(100vh - 70px);
   padding: 0 calc(3.5vw + 5px);
   margin-top: 70px;
   position: relative;
 
   @media screen and (max-width: 780px){
-    min-height: calc(100vh - 70px - 60px);
+    // min-height: calc(100vh - 70px - 60px);
   }
 `
 
@@ -105,12 +125,12 @@ const PlayButton = styled.button`
   }
 
   @media screen and (max-width: 590px){
-    font-size: 8px;
-    paddding: 0 15px;
-    height: 45px;
+    font-size: 10px;
+    paddding: 0 5px;
+    height: 42px;
 
     img{
-      height: 22px;
+      height: 20px;
     }
   }
 `
