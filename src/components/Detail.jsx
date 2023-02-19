@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useParams } from 'react-router-dom'
 import axios from '../axios';
+import { FaStar } from 'react-icons/fa';
 
 const Detail = () => {
   const { id } = useParams();
+  
+  const API_KEY = "a8488397d0e756fddfac67d9034397d2";
 
   const [movieDetail, setMovieDetail] = useState([]);
 
@@ -12,46 +15,77 @@ const Detail = () => {
 
     useEffect(() => {
         async function fetchData() {
-          const request = await axios.get();
-          setMovieDetail(request.data.results);
+          const request = await axios.get(`/movie/${id}?api_key=${API_KEY}&language=en-US`);
+          setMovieDetail(request.data);
           return request;
         }
 
         fetchData();
-    }, []);
+    }, [id]);
 
     // console.log(movieDetail);
 
   return (
     <Container>
       <Background>
-        <img src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/4F39B7E16726ECF419DD7C49E011DD95099AA20A962B0B10AA1881A70661CE45/scale?width=1440&aspectRatio=1.78&format=jpeg" alt="" />
+        <img src={`${base_url}${movieDetail ? movieDetail.backdrop_path : ""}`} alt={movieDetail.original_title} />
       </Background>
-      <ImageTitle>
-        <img src="https://prod-ripcut-delivery.disney-plus.net/v1/variant/disney/D7AEE1F05D10FC37C873176AAA26F777FC1B71E7A6563F36C6B1B497CAB1CEC2/scale?width=1440&aspectRatio=1.78" alt="" />
-      </ImageTitle>
-      <Controls>
-        <PlayButton>
-          <img src="/images/play-icon-black.png" alt="" />
-          <span>PLAY</span>
-        </PlayButton>
-        <TrailerButton>
-          <img src="/images/play-icon-white.png" alt="" />
-          <span>TRAILER</span>
-        </TrailerButton>
-        <AddButton>
-          <span>+</span>
-        </AddButton>
-        <GroupWatchButton>
-          <img src="/images/group-icon.png" alt="" />
-        </GroupWatchButton>
-      </Controls>
-      <SubTitle>
-        Lorem ipsum dolor sit amet consectetur.
-      </SubTitle>
-      <Description>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloribus mollitia recusandae voluptatibus aliquam? Dicta corrupti ullam soluta deleniti, vel dolor, nam tempore ipsum repellat excepturi officiis beatae magnam sit veritatis?
-      </Description>
+      <FlexCol>
+        <ImageTitle>
+          <img src={`${base_url}${movieDetail ? movieDetail.poster_path : ""}`} alt={movieDetail.original_title} />
+        </ImageTitle>
+        <RightCol>
+          <Title>
+            <h1>{movieDetail ? movieDetail.original_title : ""}</h1>
+          </Title>
+          <Genre>
+            {
+              movieDetail && movieDetail.genres
+            ?
+              movieDetail.genres.map((genre) => (
+                <p key={genre.id}>{genre.name}</p>
+              ))
+                : ""
+            }
+          </Genre>
+          <Controls>
+            <PlayButton>
+              <img src="/images/play-icon-black.png" alt="" />
+              <span>PLAY</span>
+            </PlayButton>
+            <TrailerButton>
+              <img src="/images/play-icon-white.png" alt="" />
+              <span>TRAILER</span>
+            </TrailerButton>
+            <AddButton>
+              <span>+</span>
+            </AddButton>
+            <GroupWatchButton>
+              <img src="/images/group-icon.png" alt="" />
+            </GroupWatchButton>
+          </Controls>
+          <Vote>
+            <p>
+              {movieDetail ? Math.floor(movieDetail.vote_average) : ""}
+            <span><FaStar size={12}/></span>
+            </p>
+            <p>{movieDetail ? "(" + movieDetail.vote_count + ") votes" : ""}</p>
+          </Vote>
+          <Runtime>
+            <p>
+              {movieDetail ? movieDetail.runtime + " mins" : ""}
+            </p>
+          </Runtime>
+          <SubTitle>
+            <h2>Tagline: </h2>
+            <p>{movieDetail ? movieDetail.tagline : ""}</p>
+          </SubTitle>
+          <Description>
+            <h2>Overview</h2>
+            <p>{movieDetail ? movieDetail.overview : ""}</p>
+          </Description>
+        </RightCol>
+      </FlexCol>
     </Container>
   )
 }
@@ -65,7 +99,7 @@ const Container = styled.div`
   position: relative;
 
   @media screen and (max-width: 780px){
-    // min-height: calc(100vh - 70px - 60px);
+    padding-bottom: 70px;
   }
 `
 
@@ -82,19 +116,74 @@ const Background = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: top;
+    opacity: 0.7;
+  }
+`
+
+const FlexCol = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  // min-height: calc(100vh - 70px);
+
+  @media screen and (max-width: 780px){
+    flex-direction: column;
+    align-items: flex-start;
   }
 `
 
 const ImageTitle = styled.div`
   min-height: 170px;
-  min-width: 200px;
-  height: 30vh;
-  width: 35vw;
+  min-width: 280px;
+  height: 100%;
+  width: 50px;
+  border-radius: 6px;
+  box-shadow: rgb(0 0 0 / 69%) 0px 26px 30px -10px, rgb(0 0 0 / 73%) 0px 16px 10px -10px;
 
   img{
     height: 100%;
     width: 100%;
     object-fit: contain;
+    border-radius: 6px;
+  }
+
+  @media screen and (max-width: 780px){
+    margin-top: 20px;
+  }
+
+  @media screen and (max-width: 590px){
+    min-width: 150px;
+  }
+`
+
+const RightCol = styled.div``
+
+const Title = styled.div`
+  h1{
+    margin-top: 0;
+    font-size: 32px;
+  }
+
+  @media screen and (max-width: 590px){
+    h1{
+      font-size: 24px;
+    }
+  }
+`
+
+const Genre = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  p{
+    border: 1px solid rgb(249, 249, 249);
+    padding: 11px;
+    border-radius: 50px;
+    font-size: 10px;
+    margin: 0 0 20px;
   }
 `
 
@@ -176,21 +265,57 @@ const GroupWatchButton = styled(AddButton)`
   }
 `
 
+const Vote = styled.div`
+  display: flex;
+  gap: 20px;
+
+  p{
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin: 20px 0 0;
+  }
+`
+
+const Runtime = styled.div`
+  p{
+    margin: 10px 0 0;
+  }
+`
+
 const SubTitle = styled.div`
   color: rgb(249, 249, 249);
-  font-size: 15px;
-  min-height: 20px;
-  margin-top: 26px;
+  margin-top: 10px;
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+
+  h2, p{
+    margin: 0;
+  }
+
+  h2{
+    font-size: 17px;
+  }
+
+  p{
+    font-size: 16px;
+    font-style: italic;
+  }
 `
 
 const Description = styled.div`
-  line-height: 1.4;
-  font-size: 20px;
-  margin-top: 16px;
+  margin-top: 10px;
   color: rgb(249, 249, 249);
-  max-width: 500px;
 
-  @media screen and (max-width: 590px){
-    font-size: 18px;
+  h2{
+    margin: 0 0 10px;
+    font-size: 20px;
+  }
+
+  p{
+    margin-top: 0;
+    font-size: 15px;
+    line-height: 1.4;
   }
 `

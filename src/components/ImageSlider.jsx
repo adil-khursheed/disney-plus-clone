@@ -22,7 +22,7 @@ const ImageSlider = ({ fetchUrl }) => {
         fetchData();
     }, [fetchUrl]);
 
-    // console.log(movies);
+    // console.log(topMovies);
 
     let settings = {
         dots: true,
@@ -44,9 +44,9 @@ const ImageSlider = ({ fetchUrl }) => {
                       <p>
                           <span>{movie.release_date || movie.first_air_date}</span>
                           <span>&#183;</span>
-                          <span>{movie.media_type}</span>
+                          <span>{(movie.media_type).toUpperCase()}</span>
                           <span>&#183;</span>
-                          <span>{movie.original_language}</span>
+                          <span>{(movie.original_language).toUpperCase()}</span>
                     </p>
                 </div>
                   </Link>
@@ -106,7 +106,7 @@ const Wrap = styled.div`
         object-position: center;
         box-shadow: rgb(0 0 0 / 69%) 0px 26px 30px -10px, rgb(0 0 0 / 73%) 0px 16px 10px -10px;
         transition-duration: 300ms;
-        opacity: 0.5;
+        opacity: 0.7;
 
         &:hover{
             border: 4px solid rgba(249, 249, 249, 0.8);
