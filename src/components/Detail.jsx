@@ -1,91 +1,95 @@
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import { useParams } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
 import axios from '../axios';
 import { FaStar } from 'react-icons/fa';
 
 const Detail = () => {
   const { id } = useParams();
-  
+
   const API_KEY = "a8488397d0e756fddfac67d9034397d2";
 
   const [movieDetail, setMovieDetail] = useState([]);
 
-    const base_url = "https://image.tmdb.org/t/p/original/";
+  const base_url = "https://image.tmdb.org/t/p/original/";
 
-    useEffect(() => {
-        async function fetchData() {
-          const request = await axios.get(`/movie/${id}?api_key=${API_KEY}&language=en-US`);
-          setMovieDetail(request.data);
-          return request;
-        }
+  useEffect(() => {
+    async function fetchData() {
+      const request = await axios.get(`/movie/${id}?api_key=${API_KEY}&language=en-US`);
+      setMovieDetail(request.data);
+      return request;
+    }
 
-        fetchData();
-    }, [id]);
+    fetchData();
+  }, [id]);
 
-    // console.log(movieDetail);
+  // console.log(movieDetail);
 
   return (
     <Container>
-      <Background>
-        <img src={`${base_url}${movieDetail ? movieDetail.backdrop_path : ""}`} alt={movieDetail.original_title} />
-      </Background>
-      <FlexCol>
-        <ImageTitle>
-          <img src={`${base_url}${movieDetail ? movieDetail.poster_path : ""}`} alt={movieDetail.original_title} />
-        </ImageTitle>
-        <RightCol>
-          <Title>
-            <h1>{movieDetail ? movieDetail.original_title : ""}</h1>
-          </Title>
-          <Genre>
-            {
-              movieDetail && movieDetail.genres
-            ?
-              movieDetail.genres.map((genre) => (
-                <p key={genre.id}>{genre.name}</p>
-              ))
-                : ""
-            }
-          </Genre>
-          <Controls>
-            <PlayButton>
-              <img src="/images/play-icon-black.png" alt="" />
-              <span>PLAY</span>
-            </PlayButton>
-            <TrailerButton>
-              <img src="/images/play-icon-white.png" alt="" />
-              <span>TRAILER</span>
-            </TrailerButton>
-            <AddButton>
-              <span>+</span>
-            </AddButton>
-            <GroupWatchButton>
-              <img src="/images/group-icon.png" alt="" />
-            </GroupWatchButton>
-          </Controls>
-          <Vote>
-            <p>
-              {movieDetail ? Math.floor(movieDetail.vote_average) : ""}
-            <span><FaStar size={12}/></span>
-            </p>
-            <p>{movieDetail ? "(" + movieDetail.vote_count + ") votes" : ""}</p>
-          </Vote>
-          <Runtime>
-            <p>
-              {movieDetail ? movieDetail.runtime + " mins" : ""}
-            </p>
-          </Runtime>
-          <SubTitle>
-            <h2>Tagline: </h2>
-            <p>{movieDetail ? movieDetail.tagline : ""}</p>
-          </SubTitle>
-          <Description>
-            <h2>Overview</h2>
-            <p>{movieDetail ? movieDetail.overview : ""}</p>
-          </Description>
-        </RightCol>
-      </FlexCol>
+      {movieDetail && (
+        <>
+          <Background>
+            <img src={`${base_url}${movieDetail ? movieDetail.backdrop_path : ""}`} alt={movieDetail.original_title} />
+          </Background>
+          <FlexCol>
+            <ImageTitle>
+              <img src={`${base_url}${movieDetail ? movieDetail.poster_path : ""}`} alt={movieDetail.original_title} />
+            </ImageTitle>
+            <RightCol>
+              <Title>
+                <h1>{movieDetail ? movieDetail.original_title : ""}</h1>
+              </Title>
+              <Genre>
+                {
+                  movieDetail && movieDetail.genres
+                ?
+                  movieDetail.genres.map((genre) => (
+                    <p key={genre.id}>{genre.name}</p>
+                  ))
+                    : ""
+                }
+              </Genre>
+              <Controls>
+                <PlayButton>
+                  <img src="/images/play-icon-black.png" alt="" />
+                  <span>PLAY</span>
+                </PlayButton>
+                <TrailerButton>
+                  <img src="/images/play-icon-white.png" alt="" />
+                  <span>TRAILER</span>
+                </TrailerButton>
+                <AddButton>
+                  <span>+</span>
+                </AddButton>
+                <GroupWatchButton>
+                  <img src="/images/group-icon.png" alt="" />
+                </GroupWatchButton>
+              </Controls>
+              <Vote>
+                <p>
+                  {movieDetail ? Math.floor(movieDetail.vote_average) : ""}
+                <span><FaStar size={12}/></span>
+                </p>
+                <p>{movieDetail ? "(" + movieDetail.vote_count + ") votes" : ""}</p>
+              </Vote>
+              <Runtime>
+                <p>
+                  {movieDetail ? movieDetail.runtime + " mins" : ""}
+                </p>
+              </Runtime>
+              <SubTitle>
+                <h2>Tagline: </h2>
+                <p>{movieDetail ? movieDetail.tagline : ""}</p>
+              </SubTitle>
+              <Description>
+                <h2>Overview</h2>
+                <p>{movieDetail ? movieDetail.overview : ""}</p>
+              </Description>
+            </RightCol>
+          </FlexCol>
+        </>
+      )}
     </Container>
   )
 }

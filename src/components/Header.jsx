@@ -1,11 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 
 const Header = () => {
   return (
       <Navbar>
           <Nav>
-              <Logo src='/images/logo.svg' alt='Disney+' />
+              <Link to='/'>
+                <Logo src='/images/logo.svg' alt='Disney+' />
+              </Link>
               <NavMenu>
                   <a>
                       <img src="/images/home-icon.svg" alt='icon' />

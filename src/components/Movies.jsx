@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import axios from '../axios';
 import { Link } from 'react-router-dom';
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const Movies = ({ title, fetchUrl }) => {
 
@@ -28,7 +29,7 @@ const Movies = ({ title, fetchUrl }) => {
               {movies.map(movie => (
                   <Wrap key={movie.id}>
                       <Link to={`/detail/${movie.id}`}>
-                        <img src={`${base_url}${movie.poster_path}`} alt={movie.name} />
+                        <LazyLoadImage src={`${base_url}${movie.poster_path}`} alt={movie.name} />
                       </Link>
                   </Wrap>
               ))}
