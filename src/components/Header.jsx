@@ -1,41 +1,98 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import {
+    selectUserName,
+    selectUserPhoto,
+    setSignOut,
+    setUserLogin
+} from '../features/user/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { auth, provider } from '../firebase';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const userName = useSelector(selectUserName);
+    const userPhoto = useSelector(selectUserPhoto);
+
+    useEffect(() => {
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                dispatch(setUserLogin({
+                    name: user.displayName,
+                    email: user.email,
+                    photo: user.photoURL,
+                }))
+                navigate("/")
+            }
+        })
+    }, [])
+
+    const signIn = () => {
+        auth.signInWithPopup(provider)
+            .then((result) => {
+            let user = result.user
+            dispatch(setUserLogin({
+                name: user.displayName,
+                email: user.email,
+                photo: user.photoURL,
+            }))
+            navigate("/")
+        })
+    }
+
+    const signOut = () => {
+        auth.signOut()
+            .then(() => {
+                dispatch(setSignOut());
+                navigate("/login")
+        })
+    }
+
   return (
       <Navbar>
           <Nav>
               <Link to='/'>
                 <Logo src='/images/logo.svg' alt='Disney+' />
               </Link>
-              <NavMenu>
-                  <a>
-                      <img src="/images/home-icon.svg" alt='icon' />
-                      <span>HOME</span>
-                  </a>
-                  <a>
-                      <img src="/images/search-icon.svg" alt='icon' />
-                      <span>SEARCH</span>
-                  </a>
-                  <a>
-                      <img src="/images/watchlist-icon.svg" alt='icon' />
-                      <span>WATCHLIST</span>
-                  </a>
-                  <a>
-                      <img src="/images/original-icon.svg" alt='icon' />
-                      <span>ORIGINALS</span>
-                  </a>
-                  <a>
-                      <img src="/images/movie-icon.svg" alt='icon' />
-                      <span>MOVIES</span>
-                  </a>
-                  <a>
-                      <img src="/images/series-icon.svg" alt='icon' />
-                      <span>SERIES</span>
-                  </a>
-              </NavMenu>
-              <UserImage src='https://images.thecompanycheck.com/directorimage/adil_khursheed_1065851.webp'/>
+              {
+                  !userName ? (
+                      <Login onClick={signIn}>Login</Login>) :
+              <>
+                  <NavMenu>
+                      <a>
+                          <img src="/images/home-icon.svg" alt='icon' />
+                          <span>HOME</span>
+                      </a>
+                      <a>
+                          <img src="/images/search-icon.svg" alt='icon' />
+                          <span>SEARCH</span>
+                      </a>
+                      <a>
+                          <img src="/images/watchlist-icon.svg" alt='icon' />
+                          <span>WATCHLIST</span>
+                      </a>
+                      <a>
+                          <img src="/images/original-icon.svg" alt='icon' />
+                          <span>ORIGINALS</span>
+                      </a>
+                      <a>
+                          <img src="/images/movie-icon.svg" alt='icon' />
+                          <span>MOVIES</span>
+                      </a>
+                      <a>
+                          <img src="/images/series-icon.svg" alt='icon' />
+                          <span>SERIES</span>
+                      </a>
+                  </NavMenu>
+                          <UserImage
+                              onClick={signOut}
+                              src='https://images.thecompanycheck.com/directorimage/adil_khursheed_1065851.webp' />
+              </>
+              }
             </Nav>
       </Navbar>
   )
@@ -69,6 +126,23 @@ const Nav = styled.nav`
 
 const Logo = styled.img`
     width: 80px;
+`
+
+const Login = styled.div`
+    border: 1px solid #f9f9f9;
+    padding: 8px 16px;
+    border-radius: 4px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    background-color: rgba(0, 0, 0, 0.6);
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover{
+        background-color: #f9f9f9;
+        color: #000;
+        border-color: transparent;
+    }
 `
 
 const NavMenu = styled.div`
@@ -151,6 +225,7 @@ const UserImage = styled.img`
     height: 48px;
     border-radius: 50%;
     object-fit: cover;
+    cursor: pointer;
 
     @media screen and (max-width: 590px){
         width: 40px;
